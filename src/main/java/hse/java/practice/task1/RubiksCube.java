@@ -12,8 +12,6 @@ public class RubiksCube  implements Cube{
 	private static final int EDGE_SIZE      = 3;
 	private static final int CENTER_INDEX   = 5;
 	private static final int FIXED_ELEM     = 8;
-	private static final int ELEMENTS_COUNT = 54;
-
 
     private final Edge[] edges = new Edge[EDGES_COUNT];
 	private final int[] states;
@@ -40,12 +38,12 @@ public class RubiksCube  implements Cube{
 
 	@Override
     public void front(RotateDirection direction) {
-        applyCycleToStates(direction == RotateDirection.CLOCKWISE ? Permutations.F_CW : Permutations.F_CCW);
+        applyCyclesToStates(direction == RotateDirection.CLOCKWISE ? Permutations.F_CW : Permutations.F_CCW);
     }
     
 	@Override
     public void back(RotateDirection direction) {
-        applyCycleToStates(direction == RotateDirection.CLOCKWISE ? Permutations.B_CW : Permutations.B_CCW);
+        applyCyclesToStates(direction == RotateDirection.CLOCKWISE ? Permutations.B_CW : Permutations.B_CCW);
     }
 
     @Override
@@ -55,22 +53,22 @@ public class RubiksCube  implements Cube{
 
 	@Override
     public void left(RotateDirection direction) {
-        applyCycleToStates(direction == RotateDirection.CLOCKWISE ? Permutations.L_CW : Permutations.L_CCW);
+        applyCyclesToStates(direction == RotateDirection.CLOCKWISE ? Permutations.L_CW : Permutations.L_CCW);
 	}
 
 	@Override
     public void right(RotateDirection direction) {
-        applyCycleToStates(direction == RotateDirection.CLOCKWISE ? Permutations.R_CW : Permutations.R_CCW);
+        applyCyclesToStates(direction == RotateDirection.CLOCKWISE ? Permutations.R_CW : Permutations.R_CCW);
     }
 
 	@Override
     public void up(RotateDirection direction) {
-        applyCycleToStates(direction == RotateDirection.CLOCKWISE ? Permutations.U_CW : Permutations.U_CCW);
+        applyCyclesToStates(direction == RotateDirection.CLOCKWISE ? Permutations.U_CW : Permutations.U_CCW);
     }
 
     @Override
     public void down(RotateDirection direction) {
-        applyCycleToStates(direction == RotateDirection.CLOCKWISE ? Permutations.D_CW : Permutations.D_CCW);
+        applyCyclesToStates(direction == RotateDirection.CLOCKWISE ? Permutations.D_CW : Permutations.D_CCW);
     }
 
 	private void applyCycleToState(int[] c) {
@@ -83,7 +81,7 @@ public class RubiksCube  implements Cube{
 		}
 	}
 
-	private void applyCycleToStates(int[][] cs) {
+	private void applyCyclesToStates(int[][] cs) {
 		for (int[] c : cs) applyCycleToState(c);
 	}
 
@@ -101,7 +99,6 @@ public class RubiksCube  implements Cube{
 	}
 
 	private CubeColor elemColor(int edgeIndex, int pos) {
-		
 		int stateIndex = states[edgeIndex * FIXED_ELEM + pos];
 		int front = (stateIndex - 1) / FIXED_ELEM;
 		return CubeColor.values()[Permutations.CURR_EDGES_ORDER[front]];

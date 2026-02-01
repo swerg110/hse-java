@@ -73,7 +73,7 @@ public class Permutations {
 	private static int[][] reverseCycles(int[][] cs) {
 	return Arrays.stream(cs)
 			.map(c -> {
-				int cLen = c.length;
+				final int cLen = c.length;
 				int[] rev = new int[cLen];
 				rev[0] = c[0];
 				IntStream.range(1, cLen).forEach(i -> rev[i] = c[cLen - i]);
