@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Необходимо реализовать интерфейс Cube
  * При повороте передней грани, меняются верх низ право и лево
  */
-public class RubiksCube {
+public class RubiksCube implements Cube{
 
     private static final int EDGES_COUNT = 6;
 
@@ -38,4 +38,34 @@ public class RubiksCube {
     public String toString() {
         return Arrays.toString(edges);
     }
+
+	@Override
+	public void back(RotateDirection direction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void down(RotateDirection direction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void left(RotateDirection direction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void right(RotateDirection direction) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void up(RotateDirection direction) {
+		// TODO Auto-generated method stub
+		
+	}
 }
