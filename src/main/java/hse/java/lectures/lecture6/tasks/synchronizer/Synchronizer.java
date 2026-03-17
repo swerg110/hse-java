@@ -1,33 +1,47 @@
 package hse.java.lectures.lecture6.tasks.synchronizer;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class Synchronizer {
+import lombok.Getter;
 
-    public static final int DEFAULT_TICKS_PER_WRITER = 10;
-    private final List<StreamWriter> tasks;
-    private final int ticksPerWriter;
+public class Synchronizer 
+{
+	@Getter
+	public static final int DEFAULT_TICKS_PER_WRITER = 10;
+	@Getter
+	private final List<StreamWriter> tasks;
+	@Getter
+	private final int ticksPerWriter;
 
-    public Synchronizer(List<StreamWriter> tasks) {
-        this(tasks, DEFAULT_TICKS_PER_WRITER);
-    }
+	public Synchronizer(List<StreamWriter> tasks)
+	{
+		this(tasks, DEFAULT_TICKS_PER_WRITER);
+	}
 
-    public Synchronizer(List<StreamWriter> tasks, int ticksPerWriter) {
-        this.tasks = tasks;
-        this.ticksPerWriter = ticksPerWriter;
-    }
+	public Synchronizer(List<StreamWriter> tasks, int ticksPerWriter)
+	{
+		this.tasks = tasks;
+		this.ticksPerWriter = ticksPerWriter;
+	}
 
-    /**
-     * Starts infinite writer threads and waits until each writer prints exactly ticksPerWriter ticks
-     * in strict ascending id order.
-     */
-    public void execute() {
-        // add monitor and sync
-        for (StreamWriter writer : tasks) {
-            Thread worker = new Thread(writer, "stream-writer-" + writer.getId());
-            worker.setDaemon(true);
-            worker.start();
-        }
-    }
+	public void execute() throws InterruptedException
+	{
 
+		int[] ids = new int[tasks.size()];
+		for (int i = 0; i < tasks.size(); i++) ids[i] = tasks.get(i).getId();
+		Arrays.sort(ids);
+		StreamingMonitor monitor = new StreamingMonitor(ids, ticksPerWriter);
+
+
+		for (StreamWriter writer : tasks) writer.attach(monitor);
+
+		for (StreamWriter writer : tasks)
+		{
+			Thread thread = new Thread(writer, "stream-writer-" + writer.getId());
+			thread.setDaemon(true);
+			thread.start();
+		}
+		monitor.waitAll();
+	}
 }

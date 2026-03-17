@@ -4,33 +4,46 @@ import lombok.Getter;
 
 import java.io.PrintStream;
 
-public class StreamWriter implements Runnable {
+public class StreamWriter implements Runnable
+{
+	@Getter
+	private final String message;
+	@Getter
+	private final int id;
+	@Getter
+	private final PrintStream output;
+	@Getter
+	private final Runnable onTick;
+	@Getter
+	private volatile StreamingMonitor monitor;
 
-    private final String message;
-    @Getter
-    private final int id;
-    private final PrintStream output;
-    private final Runnable onTick;
-    private volatile StreamingMonitor monitor;
+	public StreamWriter(int id, String message, PrintStream output, Runnable onTick) {
+		this.message = message;
+		this.id = id;
+		this.output = output;
+		this.onTick = onTick;
+	}
 
-    public StreamWriter(int id, String message, PrintStream output, Runnable onTick) {
-        this.message = message;
-        this.id = id;
-        this.output = output;
-        this.onTick = onTick;
-    }
+	public void attach(StreamingMonitor monitor) 
+	{
+		this.monitor = monitor;
+	}
 
-    public void attachMonitor(StreamingMonitor monitor) {
-        this.monitor = monitor;
-    }
-
-    @Override
-    public void run() {
-        // Writer threads are intentionally infinite for the task contract.
-        while (true) {
-            output.print(message);
-            onTick.run();
-        }
-    }
-
+	@Override
+	public void run() 
+	{
+		while (true) 
+		{
+			try 
+			{
+				monitor.await(id);
+				output.print(message);
+				onTick.run();
+				monitor.tickDone();
+			} catch (InterruptedException e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }
