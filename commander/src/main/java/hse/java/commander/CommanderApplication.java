@@ -21,6 +21,5 @@ public class CommanderApplication extends Application {
         stage.setTitle("Commander");
         stage.setScene(scene);
         stage.show();
-        System.out.println("Hello world");
     }
 }

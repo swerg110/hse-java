@@ -5,10 +5,16 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="627.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hse.java.commander.MainController">
     <HBox prefHeight="370.0" prefWidth="627.0">
-        <ListView fx:id="left" id="left" prefHeight="318.0" prefWidth="311.0" />
-        <ListView fx:id="right" id="right" prefHeight="318.0" prefWidth="321.0" />
+        <VBox prefWidth="313.0">
+            <Label fx:id="leftLabel" maxWidth="Infinity" style="-fx-background-color: #e8e8e8; -fx-padding: 2 4;" />
+            <ListView fx:id="left" prefHeight="350.0" prefWidth="313.0" VBox.vgrow="ALWAYS" />
+        </VBox>
+        <VBox prefWidth="314.0">
+            <Label fx:id="rightLabel" maxWidth="Infinity" style="-fx-background-color: #e8e8e8; -fx-padding: 2 4;" />
+            <ListView fx:id="right" prefHeight="350.0" prefWidth="314.0" VBox.vgrow="ALWAYS" />
+        </VBox>
     </HBox>
-    <HBox spacing="10.0">
+    <HBox spacing="10.0" style="-fx-padding: 6;">
         <Button fx:id="copy" mnemonicParsing="false" text="Copy" />
         <Button fx:id="move" mnemonicParsing="false" text="Move" />
         <Button fx:id="delete" mnemonicParsing="false" text="Delete" />
